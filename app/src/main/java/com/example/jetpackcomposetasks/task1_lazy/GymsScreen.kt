@@ -2,17 +2,15 @@ package com.example.jetpackcomposetasks.task1_lazy
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -34,10 +32,10 @@ import com.example.jetpackcomposetasks.ui.theme.White
 fun MyScreen(items: List<Item>) {
     LazyColumn(
         modifier = Modifier
+//LazyColumn did that automatic .verticalScroll(rememberScrollState()) // New << when recomposition occurs it will remember my last position >>
             .fillMaxSize()
             .background(Gray2),
-        contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        contentPadding = PaddingValues(8.dp),
     ) {
         items(items){ item ->
             Item(item)
@@ -48,25 +46,23 @@ fun MyScreen(items: List<Item>) {
 @Composable
 fun Item(item:Item) {
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(100.dp)
-            .padding(8.dp)
+        elevation = CardDefaults.cardElevation(4.dp), // New
+        modifier = Modifier.padding(8.dp)
     ) {
         Row (
-            modifier = Modifier.background(White)
+            modifier = Modifier.background(White),
+            verticalAlignment = Alignment.CenterVertically
         ){
             Image(
                 painterResource(id = item.image),
                 contentDescription = "Logo",
-                modifier = Modifier
-                    .align(Alignment.CenterVertically)
-                    .padding(20.dp)
+                modifier = Modifier.weight(0.15f)
             )
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(8.dp)
+                    .weight(0.85f)
             ) {
                 Text(
                     text = item.title,
@@ -83,7 +79,6 @@ fun Item(item:Item) {
                         color = Gray,
                         fontSize = 14.sp,
                         FontWeight.W400,
-
                         ),
                     maxLines = 2,
                 )
